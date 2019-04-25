@@ -24,10 +24,15 @@ namespace PP2._1_1_8
         Ellipse ellipse = new Ellipse();
         Rectangle rectangle = new Rectangle();
 
-        bool isDown = true;
-        bool isRight = true;
+        ComboBoxItem selectedItem;
 
+        bool isDown;
+        bool isRight;
         bool isDownRectangle = true;
+
+        int speed;
+        int speedRectangleValue;
+
 
         public MainWindow()
         {
@@ -44,36 +49,78 @@ namespace PP2._1_1_8
 
             rectangle.Stroke = Brushes.Blue;
             rectangle.Fill = Brushes.Blue;
-            Canvas.SetLeft(rectangle, 634);
-            Canvas.SetTop(rectangle, 10);
+            Canvas.SetLeft(rectangle, 0);
+            Canvas.SetTop(rectangle, 0);
             rectangle.Height = 50;
             rectangle.Width = 50;
             AnimationCanvas.Children.Add(rectangle);
+
+            Direction.SelectedItem = defaultValue; // значение по умолчанию
 
         }
 
         private void StartAnimation_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                speed = int.Parse(Speed.Text);
+                speedRectangleValue = int.Parse(speedRectangle.Text);
 
-            var timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 30);
-            timer.Tick += Timer_tick;
-            timer.Start();
+                if ((speed > 15) || (speedRectangleValue > 15) || (speed <= 1) || (speedRectangleValue <= 1))
+                {
+                    MessageBox.Show("Неверная скорость у одного из элементов!", "Скорость");
+                }
+                else
+                {
+                    Speed.IsReadOnly = true;
+                    speedRectangle.IsReadOnly = true;
+                    StartAnimation.Visibility = Visibility.Hidden; // прячем кнопку "Start" после нажатия
+
+                    var timer = new DispatcherTimer();
+                    timer.Interval = new TimeSpan(0, 0, 0, 0, 2);
+                    timer.Tick += Timer_tick;
+                    timer.Start(); // запускаем таймер
+                }
+            }
+            catch (System.FormatException)
+            {
+                MessageBox.Show("Неверный формат ввода!","Ошибка");
+            }
+
+            switch (selectedItem.Tag.ToString())
+            {
+                case "1":
+                    isDown = false;
+                    isRight = true;
+                    break;
+                case "2":
+                    isDown = true;
+                    isRight = true;
+                    break;
+                case "3":
+                    isDown = false;
+                    isRight = false;
+                    break;
+                case "4":
+                    isDown = true;
+                    isRight = false;
+                    break;
+            }   
         }
 
         private void Timer_tick(object sender, EventArgs e)
         {
-            int speed = int.Parse(Speed.Text);
-            Speed.IsReadOnly = true;
-            if (Canvas.GetTop(rectangle) + rectangle.Height >= AnimationCanvas.ActualHeight)
+
+           
+            if (Canvas.GetTop(rectangle) + rectangle.Height >= AnimationCanvas.ActualHeight) // если достигли нижней границы
                 isDownRectangle = false;
 
-            if (Canvas.GetTop(rectangle) + rectangle.Height <= rectangle.Height)
+            if (Canvas.GetTop(rectangle) + rectangle.Height <= rectangle.Height) // если достигли правой границы
                 isDownRectangle = true;
 
 
 
-            if ((Canvas.GetTop(ellipse) + ellipse.Height >= AnimationCanvas.ActualHeight))
+            if (Canvas.GetTop(ellipse) + ellipse.Height >= AnimationCanvas.ActualHeight)
                 isDown = false;
 
             if (Canvas.GetTop(ellipse) + ellipse.Height <= ellipse.Height) // ellipse.Height = 25
@@ -84,16 +131,16 @@ namespace PP2._1_1_8
 
             if (Canvas.GetLeft(ellipse) + ellipse.Width <= ellipse.Width) // ellipse.Width = 25
                 isRight = true;
+            
 
-
-
-            // Если шар летит направо
+            // Если мяч летит направо
+            
             if (isRight)
                 Canvas.SetLeft(ellipse, Canvas.GetLeft(ellipse) + speed);
             else
                 Canvas.SetLeft(ellipse, Canvas.GetLeft(ellipse) - speed);
 
-            // Если шар летит вниз
+            // Если мяч летит вниз
             if (isDown)
                 Canvas.SetTop(ellipse, Canvas.GetTop(ellipse) + speed);
             else
@@ -101,11 +148,17 @@ namespace PP2._1_1_8
             
             // Если прямоугольник летит вниз
             if (isDownRectangle)
-                Canvas.SetTop(rectangle, Canvas.GetTop(rectangle) + 3);
+                Canvas.SetTop(rectangle, Canvas.GetTop(rectangle) + speedRectangleValue);
             else
-                Canvas.SetTop(rectangle, Canvas.GetTop(rectangle) - 3);
+                Canvas.SetTop(rectangle, Canvas.GetTop(rectangle) - speedRectangleValue);
 
 
+        }
+
+        private void Direction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender;
+            selectedItem = (ComboBoxItem)comboBox.SelectedItem;
         }
     }
 }
