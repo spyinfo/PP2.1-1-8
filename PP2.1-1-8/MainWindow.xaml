@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PP2._1_1_8"
         mc:Ignorable="d"
-        Title="MainWindow" Height="539" Width="798" ResizeMode="NoResize" Background="#FFD1D1D1" Foreground="#FFA4A4A4" WindowStartupLocation="CenterScreen">
+        Title="Движение мяча" Height="539" Width="798" ResizeMode="NoResize" Background="#FFD1D1D1" Foreground="#FFA4A4A4" WindowStartupLocation="CenterScreen">
 
     <Canvas x:Name="AnimationCanvas" Margin="28,91,39,57" OpacityMask="#FFF5A7A7" Height="362" Width="736">
         <Canvas.Background>
@@ -32,10 +32,26 @@
             <ComboBoxItem Content="Левый нижний угол" Tag="4"/>
         </ComboBox>
 
-        <TextBox Height="27" Canvas.Left="412" TextWrapping="Wrap" Text="Скорость прямоугольника (1 - 15):" Canvas.Top="-84" Width="235" IsReadOnly="True" Background="#FFD1D1D1" 
+        <TextBox Height="27" Canvas.Left="373" TextWrapping="Wrap" Text="Скорость прямоугольника (1 - 15):" Canvas.Top="-84" Width="235" IsReadOnly="True" Background="#FFD1D1D1" 
                  HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
 
-        <TextBox x:Name="speedRectangle" MaxLength="2" Height="27" Canvas.Left="647" TextWrapping="Wrap" Text="" Canvas.Top="-84" Width="47" Background="White" TabIndex="1"
+        <TextBox x:Name="speedRectangle" MaxLength="2" Height="27" Canvas.Left="613" TextWrapping="Wrap" Text="" Canvas.Top="-84" Width="47" Background="White" TabIndex="1"
                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black"/>
+
+
+        <TextBox Height="27" Canvas.Left="373" TextWrapping="Wrap" Text="Координаты прямоугольника:" Canvas.Top="-42" Width="208" IsReadOnly="True" Background="#FFD1D1D1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
+        <TextBox Height="20" Canvas.Left="588" TextWrapping="Wrap" Text="x1" Canvas.Top="-53" Width="32" IsReadOnly="True" Background="#FFD1D1D1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
+        <TextBox Height="19" Canvas.Left="625" TextWrapping="Wrap" Text="y1" Canvas.Top="-53" Width="32" IsReadOnly="True" Background="#FFD1D1D1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
+        <TextBox Height="19" Canvas.Left="680" TextWrapping="Wrap" Text="x2" Canvas.Top="-53" Width="32" IsReadOnly="True" Background="#FFD1D1D1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
+        <TextBox Height="19" Canvas.Left="717" TextWrapping="Wrap" Text="y2" Canvas.Top="-52" Width="32" IsReadOnly="True" Background="#FFD1D1D1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
+
+        <TextBox x:Name="x1" MaxLength="3" Height="27" Canvas.Left="588" TextWrapping="Wrap" Text="" Canvas.Top="-33" Width="32" Background="White" TabIndex="1"
+            HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black"/>
+        <TextBox x:Name="y1" MaxLength="3" Height="27" Canvas.Left="625" TextWrapping="Wrap" Text="" Canvas.Top="-33" Width="32" Background="White" TabIndex="1"
+            HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black" RenderTransformOrigin="0.893,0.852"/>
+        <TextBox x:Name="x2" MaxLength="3" Height="27" Canvas.Left="680" TextWrapping="Wrap" Text="" Canvas.Top="-33" Width="32" Background="White" TabIndex="1"
+            HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black"/>
+        <TextBox x:Name="y2" MaxLength="3" Height="27" Canvas.Left="717" TextWrapping="Wrap" Text="" Canvas.Top="-33" Width="32" Background="White" TabIndex="1"
+            HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black"/>
     </Canvas>
 </Window>
