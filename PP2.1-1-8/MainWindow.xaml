@@ -5,21 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PP2._1_1_8"
         mc:Ignorable="d"
-        Title="Движение мяча" Height="539" Width="798" ResizeMode="NoResize" Background="#FFD1D1D1" Foreground="#FFA4A4A4" WindowStartupLocation="CenterScreen">
+        Title="Движение мяча" Height="539" Width="808" ResizeMode="NoResize" Background="#FFD1D1D1" Foreground="#FFA4A4A4" WindowStartupLocation="CenterScreen">
 
-    <Canvas x:Name="AnimationCanvas" Margin="28,91,39,57" OpacityMask="#FFF5A7A7" Height="362" Width="736">
+    <Canvas x:Name="AnimationCanvas" Margin="28,91,0,57" OpacityMask="#FFF5A7A7" Height="362" Width="736" UseLayoutRounding="False" HorizontalAlignment="Left">
         <Canvas.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="Black" Offset="0"/>
                 <GradientStop Color="#FF1E6C1E"/>
             </LinearGradientBrush>
         </Canvas.Background>
-        <Button x:Name="StartAnimation" Content="Start" Canvas.Left="319" Canvas.Top="378" Width="75" Click="StartAnimation_Click" Background="#FF2CBECD" />
+        <Button x:Name="StartAnimation" Content="Start" Canvas.Left="315" Canvas.Top="378" Width="75" Click="StartAnimation_Click" Background="#FF2CBECD" />
 
         <TextBox Height="27" Canvas.Left="1" TextWrapping="Wrap" Text="Скорость мяча (1 - 15):" Canvas.Top="-84" Width="158" IsReadOnly="True" Background="#FFD1D1D1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
         <TextBox x:Name="Speed" MaxLength="2" Height="27" Canvas.Left="159" TextWrapping="Wrap" Text="" Canvas.Top="-84" Width="47" Background="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black" TabIndex="0"/>
-        <TextBox Height="27" Canvas.Left="1" TextWrapping="Wrap" Text="Направление:" Canvas.Top="-42" Width="108" IsReadOnly="True" Background="#FFD1D1D1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" BorderBrush="#FFD1D1D1" FontSize="14"/>
-        <ComboBox x:Name="Direction" Canvas.Left="109" Canvas.Top="-42" Width="164" Height="27" SelectionChanged="Direction_SelectionChanged" Foreground="Black" BorderBrush="Black" TabIndex="2">
+        <TextBox Height="27" Canvas.Left="1" TextWrapping="Wrap" Text="Направление мяча:" Canvas.Top="-42" Width="139" IsReadOnly="True" Background="#FFD1D1D1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" BorderBrush="#FFD1D1D1" FontSize="14"/>
+        <ComboBox x:Name="Direction" Canvas.Left="159" Canvas.Top="-42" Width="148" Height="27" SelectionChanged="Direction_SelectionChanged" Foreground="Black" BorderBrush="Black" TabIndex="2">
             <ComboBox.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFF0F0F0" Offset="0"/>
@@ -53,5 +53,15 @@
             HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black"/>
         <TextBox x:Name="y2" MaxLength="3" Height="27" Canvas.Left="717" TextWrapping="Wrap" Text="" Canvas.Top="-33" Width="32" Background="White" TabIndex="1"
             HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black"/>
+
+
+        <TextBox x:Name="Tip1" Height="16" TextWrapping="Wrap" Text="0" Width="18" Background="#FF1E6C1E" BorderBrush="#FF1E6C1E" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Canvas.Top="2"/>
+
+        <TextBox x:Name="Tip2" Height="16" Canvas.Left="708" TextWrapping="Wrap" Text="736" Width="28" Background="#FF1E6C1E" BorderBrush="#FF1E6C1E" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <TextBox x:Name="Tip3" Height="16" Canvas.Left="354" TextWrapping="Wrap" Text="368" Width="28" Background="#FF1E6C1E" BorderBrush="#FF1E6C1E" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+
+        <TextBox x:Name="Tip4" Height="16" TextWrapping="Wrap" Text="362" Width="28" Background="#FF1E6C1E" BorderBrush="#FF1E6C1E" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Canvas.Top="346"/>
+        <TextBox x:Name="Tip5" Height="16" TextWrapping="Wrap" Text="181" Width="28" Background="#FF1E6C1E" BorderBrush="#FF1E6C1E" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Canvas.Top="171" Canvas.Left="1"/>
+
     </Canvas>
 </Window>
