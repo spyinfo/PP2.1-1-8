@@ -21,10 +21,12 @@ namespace PP2._1_1_8
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const int maxSpeed = 15; // максимальная скорость любого объекта на поле
+        private const int minSpeed = 1; // минимальная скорость любого объекта на поле
+
         Ellipse ellipse = new Ellipse(); // эллипс
         Rectangle rectangle = new Rectangle(); // прямоугольник
-
-        ComboBoxItem selectedItem;
+        ComboBoxItem selectedItem; // текущий выбранный элемент ComboBox. По умолчанию = "Правый верхний угол"
 
         bool isDown; 
         bool isRight;
@@ -33,26 +35,24 @@ namespace PP2._1_1_8
         int speed; // скорость мяча
         int speedRectangleValue; // скорость прямоугольника
 
-        delegate double DelegateLeftTop(UIElement element);
+        delegate void DelegateSet(UIElement element, double length); // для определения Canvas.SetLeft / Canvas.SetTop
+        delegate double DelegateGet(UIElement element); // для определения Canvas.GetLeft / Canvas.GetTop
+
 
         public MainWindow()
         {
             InitializeComponent();
 
+            // создаем эллипс
             ellipse.Width = 25;
             ellipse.Height = 25;
-            Canvas.SetLeft(ellipse, 343);
-            Canvas.SetTop(ellipse, 156);
+            Canvas.SetLeft(ellipse, 358);
+            Canvas.SetTop(ellipse, 160);
             ellipse.Fill = Brushes.AntiqueWhite;
             ellipse.Stroke = Brushes.AntiqueWhite;
             AnimationCanvas.Children.Add(ellipse);
 
-
-            rectangle.Stroke = Brushes.Blue;
-            rectangle.Fill = Brushes.Blue;
-            AnimationCanvas.Children.Add(rectangle);
-
-            Direction.SelectedItem = defaultValue; // значение по умолчанию
+            Direction.SelectedItem = defaultValue; // значение по умолчанию для ComboBox
 
         }
 
@@ -71,21 +71,26 @@ namespace PP2._1_1_8
                 var X2 = int.Parse(x2.Text);
                 var Y2 = int.Parse(y2.Text);
             
-                if ((speed > 15) || (speedRectangleValue > 15) || (speed < 1) || (speedRectangleValue < 1))
+                if ((speed > maxSpeed) || (speedRectangleValue > maxSpeed) || (speed < minSpeed) || (speedRectangleValue < minSpeed))
                     MessageBox.Show("Неверная скорость у одного из элементов!", "Скорость");
 
-                else if ((X1 < 0) || (Y1 < 0) || (X2 < 0) || (Y2 < 0) || (X2 > 736) || (Y2 > 362))
+                else if ((X1 < AnimationCanvas.MinWidth) || (Y1 < AnimationCanvas.MinHeight) || (X2 < AnimationCanvas.MinWidth) || (Y2 < AnimationCanvas.MinHeight) || 
+                        (X2 > AnimationCanvas.Width) || (Y2 > AnimationCanvas.Height) || (X1 > AnimationCanvas.Width) || (Y1 > AnimationCanvas.Height))
                     MessageBox.Show("Неверные координаты прямоугольника!", "Координаты");                
 
                 else
                 {
+                    rectangle.Stroke = Brushes.Blue;
+                    rectangle.Fill = Brushes.Blue;
                     Canvas.SetLeft(rectangle, X1);
                     Canvas.SetTop(rectangle, Y1);
                     rectangle.Width = X2 - X1;
                     rectangle.Height = Y2 - Y1;
+                    AnimationCanvas.Children.Add(rectangle);
 
-                    HideTheTips();
-                    x1.IsReadOnly = true;
+                    HideTheTips(); // прячем подсказки
+                    // Все элементы TextBox делаем неизменяемыми
+                    x1.IsReadOnly = true; 
                     y1.IsReadOnly = true;
                     x2.IsReadOnly = true;
                     y2.IsReadOnly = true;
@@ -93,8 +98,8 @@ namespace PP2._1_1_8
                     speedRectangle.IsReadOnly = true;
                     StartAnimation.Visibility = Visibility.Hidden; // прячем кнопку "Start" после нажатия
 
-                    var timer = new DispatcherTimer();
-                    timer.Interval = new TimeSpan(0, 0, 0, 0, 2);
+                    DispatcherTimer timer = new DispatcherTimer();
+                    timer.Interval = new TimeSpan(0, 0, 0, 0, 5);
                     timer.Tick += Timer_tick;
                     timer.Start(); // запускаем таймер
                 }
@@ -129,7 +134,7 @@ namespace PP2._1_1_8
         }
 
         /// <summary>
-        /// Таймер
+        /// Момент времени
         /// </summary>
         private void Timer_tick(object sender, EventArgs e)
         {
@@ -158,7 +163,7 @@ namespace PP2._1_1_8
             // Сверху
             if (Canvas.GetTop(ellipse) + ellipse.Height >= Canvas.GetTop(rectangle) &&
                     (Canvas.GetTop(ellipse) + ellipse.Height < Canvas.GetTop(rectangle) + ellipse.Height) &&
-                    (Canvas.GetLeft(ellipse) >= Canvas.GetLeft(rectangle) - (ellipse.Width/2)) &&
+                    (Canvas.GetLeft(ellipse) >= Canvas.GetLeft(rectangle) - (ellipse.Width / 2)) &&
                     (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + rectangle.ActualWidth + ellipse.Width))
                 isDown = false;
 
@@ -172,7 +177,7 @@ namespace PP2._1_1_8
             // Слева
             if ((Canvas.GetLeft(ellipse) + ellipse.Width >= (Canvas.GetLeft(rectangle))) &&
                     (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + ellipse.Width) &&
-                    (Canvas.GetTop(ellipse) + (ellipse.Height/2) >= Canvas.GetTop(rectangle)) &&
+                    (Canvas.GetTop(ellipse) + (ellipse.Height / 2) >= Canvas.GetTop(rectangle)) &&
                     (Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle) + rectangle.ActualHeight))
                 isRight = false;
 
@@ -184,47 +189,18 @@ namespace PP2._1_1_8
                     (Canvas.GetTop(ellipse) + ellipse.Height <= Canvas.GetTop(rectangle) + rectangle.ActualHeight + ellipse.Height))
                 isRight = true;
 
-            //// Сверху
-            //if ((Canvas.GetTop(ellipse) + ellipse.Height >= Canvas.GetTop(rectangle)) && 
-            //        (Canvas.GetTop(ellipse) + ellipse.Height <= Canvas.GetTop(rectangle) + ellipse.Height) && 
-            //        (Canvas.GetLeft(ellipse) + ellipse.Width >= Canvas.GetLeft(rectangle)) &&
-            //        (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + rectangle.ActualWidth + ellipse.Width))
-            //    isDown = false;
 
-            ////Снизу
-            //if ((Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle) + rectangle.ActualHeight) &&
-            //        (Canvas.GetTop(ellipse) + ellipse.Height >= Canvas.GetTop(rectangle) + ellipse.Height) &&
-            //        (Canvas.GetLeft(ellipse) + ellipse.Width >= Canvas.GetLeft(rectangle)) &&
-            //        (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + rectangle.ActualWidth + ellipse.Width))
-            //    isDown = true;
+            DelegateSet delegateSetLeft = Canvas.SetLeft;
+            DelegateSet delegateSetTop = Canvas.SetTop;
 
-            ////Слева
-            //if ((Canvas.GetLeft(ellipse) + ellipse.Width >= (Canvas.GetLeft(rectangle))) &&
-            //        (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + ellipse.Width) &&
-            //        (Canvas.GetTop(ellipse) + ellipse.Height >= Canvas.GetTop(rectangle)) &&
-            //        (Canvas.GetTop(ellipse) + ellipse.Height <= Canvas.GetTop(rectangle) + rectangle.ActualHeight))
-            //    isRight = false;
+            DelegateGet delegateGetLeft = Canvas.GetLeft;
+            DelegateGet delegateGetTop = Canvas.GetTop;
 
-            ////Справа
-            //if ((Canvas.GetLeft(ellipse) + ellipse.Width <= (Canvas.GetLeft(rectangle) + rectangle.ActualWidth + ellipse.Width)) &&
-            //        (Canvas.GetLeft(ellipse) + ellipse.Width >= (Canvas.GetLeft(rectangle) + rectangle.ActualWidth)) &&
-            //        (Canvas.GetTop(ellipse) + ellipse.Height >= Canvas.GetTop(rectangle)) &&
-            //        (Canvas.GetTop(ellipse) + ellipse.Height <= Canvas.GetTop(rectangle) + rectangle.ActualHeight))
-            //    isRight = true;
+            // Если мяч летит вправо
+            isOnDirection(isRight, speed, delegateSetLeft, delegateGetLeft, ellipse);
 
-
-
-            //Если мяч летит направо
-            if (isRight)
-                Canvas.SetLeft(ellipse, Canvas.GetLeft(ellipse) + speed);
-            else
-                Canvas.SetLeft(ellipse, Canvas.GetLeft(ellipse) - speed);
-
-            //Если мяч летит вниз
-            if (isDown)
-                Canvas.SetTop(ellipse, Canvas.GetTop(ellipse) + speed);
-            else
-                Canvas.SetTop(ellipse, Canvas.GetTop(ellipse) - speed);
+            // Если мяч летит вниз
+            isOnDirection(isDown, speed, delegateSetTop, delegateGetTop, ellipse);
 
             // Если прямоугольник летит вниз
             if (isDownRectangle)
@@ -233,21 +209,29 @@ namespace PP2._1_1_8
                 Canvas.SetTop(rectangle, Canvas.GetTop(rectangle) - speedRectangleValue);
         }
 
+
+
         /// <summary>
-        /// Элемент ComboBox
+        /// Изменяет направление мяча в зависимости от "isDirection"
         /// </summary>
-        private void Direction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <param name="isDirection">Направление мяча</param>
+        /// <param name="speed">Скорость мяча</param>
+        /// <param name="delegateSetLeftTop">Определяем SetLeft или SetTop</param>
+        /// <param name="delegateGetLeftTop">Определяем GetLeft или GetTop</param>
+        /// <param name="ellipse"></param>
+        private void isOnDirection(bool isDirection, int speed, DelegateSet delegateSetLeftTop, DelegateGet delegateGetLeftTop, Ellipse ellipse)
         {
-            ComboBox comboBox = (ComboBox)sender;
-            selectedItem = (ComboBoxItem)comboBox.SelectedItem;
+            if (isDirection)
+                delegateSetLeftTop(ellipse, delegateGetLeftTop(ellipse) + speed);
+            else
+                delegateSetLeftTop(ellipse, delegateGetLeftTop(ellipse) - speed);
+
         }
 
 
-
-                /******************
-                 *     МЕТОДЫ     *
-                 ******************/
-
+        /// <summary>
+        /// Убираем подсказки
+        /// </summary>
         private void HideTheTips()
         {
             Tip1.Visibility = Visibility.Hidden;
@@ -255,6 +239,16 @@ namespace PP2._1_1_8
             Tip3.Visibility = Visibility.Hidden;
             Tip4.Visibility = Visibility.Hidden;
             Tip5.Visibility = Visibility.Hidden;
+        }
+
+
+        /// <summary>
+        /// Элемент ComboBox
+        /// </summary>
+        private void Direction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender;
+            selectedItem = (ComboBoxItem)comboBox.SelectedItem;
         }
     }
 }
