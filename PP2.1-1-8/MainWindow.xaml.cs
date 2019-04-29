@@ -1,4 +1,18 @@
-﻿using System;
+﻿/*
+  Практическая работа №2 по Прикладному программировнаию
+  Вариант 1-8.  
+
+  Пользователь выбирает начальную скорость мяча, направление движения мяча (на бильярдном столе),  а программа 
+  показывает замедленный «мультфильм» того, как мяч летит с учетом упрогого столкновения с границами стола, 
+  а также с движущимся параллелепипедом (указывается левый верхний и правый нижний угол параллелепипеда, 
+  его скорость). Параллелепипед движется сверху вниз, а, после достижения границы стола, снизу вверх и так далее.
+  
+  Apr. 2019.
+ */
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,9 +42,9 @@ namespace PP2._1_1_8
         Rectangle rectangle = new Rectangle(); // прямоугольник
         ComboBoxItem selectedItem; // текущий выбранный элемент ComboBox. По умолчанию = "Правый верхний угол"
 
-        bool isDown; 
-        bool isRight;
-        bool isDownRectangle = true;
+        bool isDown; // летит ли мяч вниз
+        bool isRight; // летит ли мяч вправо
+        bool isDownRectangle = true; // летит ли прямоугольник вниз
 
         int speed; // скорость мяча
         int speedRectangleValue; // скорость прямоугольника
@@ -80,8 +94,8 @@ namespace PP2._1_1_8
 
                 else
                 {
-                    rectangle.Stroke = Brushes.Blue;
-                    rectangle.Fill = Brushes.Blue;
+                    rectangle.Stroke = Brushes.Tomato;
+                    rectangle.Fill = Brushes.Tomato;
                     Canvas.SetLeft(rectangle, X1);
                     Canvas.SetTop(rectangle, Y1);
                     rectangle.Width = X2 - X1;
@@ -138,23 +152,23 @@ namespace PP2._1_1_8
         /// </summary>
         private void Timer_tick(object sender, EventArgs e)
         {
-            if (Canvas.GetTop(rectangle) + rectangle.Height >= AnimationCanvas.ActualHeight) // если достигли нижней границы
+            if (Canvas.GetTop(rectangle) + rectangle.Height >= AnimationCanvas.ActualHeight) // если прямоугольник достиг нижней границы
                 isDownRectangle = false;
 
-            if (Canvas.GetTop(rectangle) + rectangle.Height <= rectangle.Height) // если достигли правой границы
+            if (Canvas.GetTop(rectangle) + rectangle.Height <= rectangle.Height) // если прямоугольник достиг верхней границы
                 isDownRectangle = true;
 
 
-            if (Canvas.GetTop(ellipse) + ellipse.Height >= AnimationCanvas.ActualHeight)
+            if (Canvas.GetTop(ellipse) + ellipse.Height >= AnimationCanvas.ActualHeight) // если эллипс достиг нижней границы
                 isDown = false;
 
-            if (Canvas.GetTop(ellipse) + ellipse.Height <= ellipse.Height) // ellipse.Height = 25
+            if (Canvas.GetTop(ellipse) + ellipse.Height <= ellipse.Height) // ellipse.Height = 25. Если эллипс достиг верхней границы
                 isDown = true;
 
-            if (Canvas.GetLeft(ellipse) + ellipse.Width >= AnimationCanvas.ActualWidth)
+            if (Canvas.GetLeft(ellipse) + ellipse.Width >= AnimationCanvas.ActualWidth) // если эллипс достиг правой границы
                 isRight = false;
 
-            if (Canvas.GetLeft(ellipse) + ellipse.Width <= ellipse.Width) // ellipse.Width = 25
+            if (Canvas.GetLeft(ellipse) + ellipse.Width <= ellipse.Width) // ellipse.Width = 25. Если эллипс достиг левой границы
                 isRight = true;
 
 
@@ -190,6 +204,7 @@ namespace PP2._1_1_8
                 isRight = true;
 
 
+
             DelegateSet delegateSetLeft = Canvas.SetLeft;
             DelegateSet delegateSetTop = Canvas.SetTop;
 
@@ -218,14 +233,13 @@ namespace PP2._1_1_8
         /// <param name="speed">Скорость мяча</param>
         /// <param name="delegateSetLeftTop">Определяем SetLeft или SetTop</param>
         /// <param name="delegateGetLeftTop">Определяем GetLeft или GetTop</param>
-        /// <param name="ellipse"></param>
+        /// <param name="ellipse">ellipse</param>
         private void isOnDirection(bool isDirection, int speed, DelegateSet delegateSetLeftTop, DelegateGet delegateGetLeftTop, Ellipse ellipse)
         {
             if (isDirection)
                 delegateSetLeftTop(ellipse, delegateGetLeftTop(ellipse) + speed);
             else
                 delegateSetLeftTop(ellipse, delegateGetLeftTop(ellipse) - speed);
-
         }
 
 
