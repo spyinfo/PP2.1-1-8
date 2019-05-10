@@ -1,5 +1,5 @@
 ﻿/*
-  Практическая работа №2 по Прикладному программировнаию
+  Практическая работа №2 по Прикладному программированию
   Вариант 1-8.  
 
   Пользователь выбирает начальную скорость мяча, направление движения мяча (на бильярдном столе),  а программа 
@@ -35,8 +35,8 @@ namespace PP2._1_1_8
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const int maxSpeed = 15; // максимальная скорость любого объекта на поле
-        private const int minSpeed = 1; // минимальная скорость любого объекта на поле
+        private const byte maxSpeed = 15; // максимальная скорость любого объекта на поле
+        private const byte minSpeed = 1; // минимальная скорость любого объекта на поле
 
         Ellipse ellipse = new Ellipse(); // эллипс
         Rectangle rectangle = new Rectangle(); // прямоугольник
@@ -48,7 +48,8 @@ namespace PP2._1_1_8
 
         int speed; // скорость мяча
         int speedRectangleValue; // скорость прямоугольника
-
+        int weightEllipse; // масса мяча
+        int weightRectangle; // масса прямоугольника
         delegate void DelegateSet(UIElement element, double length); // для определения Canvas.SetLeft / Canvas.SetTop
         delegate double DelegateGet(UIElement element); // для определения Canvas.GetLeft / Canvas.GetTop
 
@@ -79,6 +80,8 @@ namespace PP2._1_1_8
             {
                 speed = int.Parse(Speed.Text);
                 speedRectangleValue = int.Parse(speedRectangle.Text);
+                weightEllipse = int.Parse(WeightEllipse.Text);
+                weightRectangle= int.Parse(WeightRectangle.Text);
 
                 var X1 = int.Parse(x1.Text);
                 var Y1 = int.Parse(y1.Text);
@@ -120,7 +123,13 @@ namespace PP2._1_1_8
             }
             catch (System.FormatException)
             {
-                MessageBox.Show("Неверный формат ввода!","Ошибка");
+                MessageBox.Show("Неверный формат ввода!"
+                    + Environment.NewLine  
+                    + Environment.NewLine
+                    + "Пожалуйста, заполните все поля и"
+                    + Environment.NewLine
+                    + "проверьте корректность данных!"
+                    ,"Ошибка");
             }
 
             switch (selectedItem.Tag.ToString())
@@ -174,26 +183,39 @@ namespace PP2._1_1_8
 
             /// Столкновения с прямоугольником
 
-            // Сверху
-            if (Canvas.GetTop(ellipse) + ellipse.Height >= Canvas.GetTop(rectangle) &&
-                    (Canvas.GetTop(ellipse) + ellipse.Height < Canvas.GetTop(rectangle) + ellipse.Height) &&
-                    (Canvas.GetLeft(ellipse) >= Canvas.GetLeft(rectangle) - (ellipse.Width / 2)) &&
-                    (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + rectangle.ActualWidth + ellipse.Width))
-                isDown = false;
 
             // Снизу
-            if ((Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle) + rectangle.ActualHeight) &&
-                    (Canvas.GetTop(ellipse) >= Canvas.GetTop(rectangle) - ellipse.Height + rectangle.ActualHeight) &&
+            if ((Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle) + rectangle.Height) &&
+                    (Canvas.GetTop(ellipse) >= Canvas.GetTop(rectangle) - ellipse.Height + rectangle.Height) &&
                     (Canvas.GetLeft(ellipse) >= Canvas.GetLeft(rectangle) - (ellipse.Width / 2)) &&
                     (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + rectangle.ActualWidth + ellipse.Width))
+            {
                 isDown = true;
+                MessageBox.Show("Снизу");
+            }
+
+
+            // Сверху
+            if (Canvas.GetTop(ellipse) + ellipse.Width >= Canvas.GetTop(rectangle) &&
+                    (Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle)) &&
+                    (Canvas.GetLeft(ellipse) >= Canvas.GetLeft(rectangle) - (ellipse.Width / 2)) &&
+                    (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + rectangle.ActualWidth + ellipse.Width))
+            {
+          
+                isDown = false;
+                MessageBox.Show("Сверху");
+            }
+
 
             // Слева
             if ((Canvas.GetLeft(ellipse) + ellipse.Width >= (Canvas.GetLeft(rectangle))) &&
                     (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + ellipse.Width) &&
                     (Canvas.GetTop(ellipse) + (ellipse.Height / 2) >= Canvas.GetTop(rectangle)) &&
                     (Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle) + rectangle.ActualHeight))
+            {
                 isRight = false;
+                MessageBox.Show("Слева");
+            }
 
 
             // Справа
@@ -201,7 +223,11 @@ namespace PP2._1_1_8
                     (Canvas.GetLeft(ellipse) > (Canvas.GetLeft(rectangle) - ellipse.Width + rectangle.ActualWidth)) &&
                     (Canvas.GetTop(ellipse) + ellipse.Width >= Canvas.GetTop(rectangle)) &&
                     (Canvas.GetTop(ellipse) + ellipse.Height <= Canvas.GetTop(rectangle) + rectangle.ActualHeight + ellipse.Height))
+            {
                 isRight = true;
+                MessageBox.Show("Справа");
+            }
+               
 
 
 
