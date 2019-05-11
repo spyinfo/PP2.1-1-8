@@ -50,7 +50,7 @@ namespace PP2._1_1_8
         double speedVertical;
         double speedHorizontal;
 
-        int speedRectangleValue; // скорость прямоугольника
+        double speedRectangleValue; // скорость прямоугольника
         int weightEllipse; // масса мяча
         int weightRectangle; // масса прямоугольника
 
@@ -91,14 +91,17 @@ namespace PP2._1_1_8
                 var Y1 = int.Parse(y1.Text);
                 var X2 = int.Parse(x2.Text);
                 var Y2 = int.Parse(y2.Text);
-            
-                if ((speed > maxSpeed) || (speedRectangleValue > maxSpeed) || (speed < minSpeed) || (speedRectangleValue < minSpeed))
-                    MessageBox.Show("Неверная скорость у одного из элементов!", "Скорость");
 
-                else if ((X1 < AnimationCanvas.MinWidth) || (Y1 < AnimationCanvas.MinHeight) || (X2 < AnimationCanvas.MinWidth) || (Y2 < AnimationCanvas.MinHeight) || 
+                if ((speed > maxSpeed) || (speedRectangleValue > maxSpeed) || (speed < minSpeed) || (speedRectangleValue < minSpeed))
+                    MessageBox.Show("Неверная скорость у одного из объектов!", "Скорость");
+
+                else if ((X1 < AnimationCanvas.MinWidth) || (Y1 < AnimationCanvas.MinHeight) || (X2 < AnimationCanvas.MinWidth) || (Y2 < AnimationCanvas.MinHeight) ||
                         (X2 > AnimationCanvas.Width) || (Y2 > AnimationCanvas.Height) || (X1 > AnimationCanvas.Width) || (Y1 > AnimationCanvas.Height) ||
                         (X2 <= X1) || (Y2 <= Y1))
-                    MessageBox.Show("Неверные координаты прямоугольника!", "Координаты");       
+                    MessageBox.Show("Неверные координаты прямоугольника!", "Координаты");
+
+                else if (weightEllipse <= 0 || weightRectangle <= 0)
+                    MessageBox.Show("Неверная масса у одного из объектов!", "Масса");
 
                 else
                 {
@@ -113,7 +116,7 @@ namespace PP2._1_1_8
                     HideTheTips(); // прячем подсказки
 
                     // Все элементы TextBox делаем неизменяемыми
-                    x1.IsReadOnly = true; 
+                    x1.IsReadOnly = true;
                     y1.IsReadOnly = true;
                     x2.IsReadOnly = true;
                     y2.IsReadOnly = true;
@@ -242,20 +245,19 @@ namespace PP2._1_1_8
             // Сверху
             if (Canvas.GetTop(ellipse) + ellipse.Width >= Canvas.GetTop(rectangle) &&
                     (Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle)) &&
-                    (Canvas.GetLeft(ellipse) >= Canvas.GetLeft(rectangle) - (ellipse.Width / 2)) &&
-                    (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + rectangle.ActualWidth + ellipse.Width))
-            {
-
+                    (Canvas.GetLeft(ellipse) + ellipse.Width) >= Canvas.GetLeft(rectangle) &&
+                    (Canvas.GetLeft(ellipse) + (ellipse.Width / 2) <= Canvas.GetLeft(rectangle) + rectangle.ActualWidth) && isDown == true)
+            {                
                 isDown = false;
                 NumberOfCollisionsTop.Text = Convert.ToString(int.Parse(NumberOfCollisionsTop.Text) + 1);
             }
 
 
             // Снизу
-            if ((Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle) + rectangle.Height) &&
+            else if ((Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle) + rectangle.Height) &&
                     (Canvas.GetTop(ellipse) >= Canvas.GetTop(rectangle) - ellipse.Height + rectangle.Height) &&
-                    (Canvas.GetLeft(ellipse) >= Canvas.GetLeft(rectangle) - (ellipse.Width / 2)) &&
-                    (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + rectangle.ActualWidth + ellipse.Width))
+                    (Canvas.GetLeft(ellipse)  + ellipse.Width) >= Canvas.GetLeft(rectangle) &&
+                    (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + rectangle.ActualWidth ) && isDown == false)
             {
                 isDown = true;
                 NumberOfCollisionsBottom.Text = Convert.ToString(int.Parse(NumberOfCollisionsBottom.Text) + 1);
@@ -263,32 +265,42 @@ namespace PP2._1_1_8
 
 
             // Слева
-            if ((Canvas.GetLeft(ellipse) + ellipse.Width >= (Canvas.GetLeft(rectangle))) &&
+            else if ((Canvas.GetLeft(ellipse) + ellipse.Width >= (Canvas.GetLeft(rectangle))) &&
                     (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + ellipse.Width) &&
                     (Canvas.GetTop(ellipse) + (ellipse.Height / 2) >= Canvas.GetTop(rectangle)) &&
                     (Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle) + rectangle.ActualHeight))
             {
                 isRight = false;
 
+                double tmpSpeedVertical = speedVertical;
+
                 speedVertical = (((weightEllipse - weightRectangle) * speedVertical) + 2 * weightRectangle * weightEllipse) / (weightEllipse + weightRectangle);
+                speedRectangleValue = (((weightRectangle - weightEllipse) * speedRectangleValue) + 2 * weightEllipse * tmpSpeedVertical) / (weightEllipse + weightRectangle);
                 //speedVertical = -speedVertical + 2 * ((weightRectangle * speedRectangleValue + weightEllipse * speedVertical) / (weightEllipse + weightRectangle));
+
                 SpeedVertical.Text = Convert.ToString(speedVertical);
+                speedRectangle.Text = Convert.ToString(speedRectangleValue);
 
                 NumberOfCollisionsLeft.Text = Convert.ToString(int.Parse(NumberOfCollisionsLeft.Text) + 1);
             }
 
 
             // Справа
-            if ((Canvas.GetLeft(ellipse) <= (Canvas.GetLeft(rectangle) + rectangle.ActualWidth)) &&
+            else if ((Canvas.GetLeft(ellipse) <= (Canvas.GetLeft(rectangle) + rectangle.ActualWidth)) &&
                     (Canvas.GetLeft(ellipse) > (Canvas.GetLeft(rectangle) - ellipse.Width + rectangle.ActualWidth)) &&
                     (Canvas.GetTop(ellipse) + ellipse.Width >= Canvas.GetTop(rectangle)) &&
                     (Canvas.GetTop(ellipse) + ellipse.Height <= Canvas.GetTop(rectangle) + rectangle.ActualHeight + ellipse.Height))
             {
                 isRight = true;
 
+                double tmpSpeedVertical = speedVertical;
+
                 speedVertical = (((weightEllipse - weightRectangle) * speedVertical) + 2 * weightRectangle * weightEllipse) / (weightEllipse + weightRectangle);
+                speedRectangleValue = (((weightRectangle - weightEllipse) * speedRectangleValue) + 2 * weightEllipse * tmpSpeedVertical) / (weightEllipse + weightRectangle);
                 //speedVertical = -speedVertical + 2 * ((weightRectangle * speedRectangleValue + weightEllipse * speedVertical) / (weightEllipse + weightRectangle));
+
                 SpeedVertical.Text = Convert.ToString(speedVertical);
+                speedRectangle.Text = Convert.ToString(speedRectangleValue);
 
                 NumberOfCollisionsRight.Text = Convert.ToString(int.Parse(NumberOfCollisionsRight.Text) + 1);
             }
@@ -322,15 +334,15 @@ namespace PP2._1_1_8
         /// </summary>
         /// <param name="isDirection">Направление мяча</param>
         /// <param name="speed">Скорость мяча</param>
-        /// <param name="delegateSetLeftTop">Определяем SetLeft или SetTop</param>
-        /// <param name="delegateGetLeftTop">Определяем GetLeft или GetTop</param>
+        /// <param name="delegateSet">Определяем SetLeft или SetTop</param>
+        /// <param name="delegateGet">Определяем GetLeft или GetTop</param>
         /// <param name="ellipse">ellipse</param>
-        private void isOnDirection(bool isDirection, double speed, DelegateSet delegateSetLeftTop, DelegateGet delegateGetLeftTop, Ellipse ellipse)
+        private void isOnDirection(bool isDirection, double speed, DelegateSet delegateSet, DelegateGet delegateGet, Ellipse ellipse)
         {
             if (isDirection)
-                delegateSetLeftTop(ellipse, delegateGetLeftTop(ellipse) + speed);
+                delegateSet(ellipse, delegateGet(ellipse) + speed);
             else
-                delegateSetLeftTop(ellipse, delegateGetLeftTop(ellipse) - speed);
+                delegateSet(ellipse, delegateGet(ellipse) - speed);
         }
 
 

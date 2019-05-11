@@ -37,9 +37,9 @@
         </ComboBox>
 
         <!--Скорость прямоугольника-->
-        <TextBox Height="27" Canvas.Left="292" TextWrapping="Wrap" Text="Скорость прямоугольника (1 - 15):" Canvas.Top="-84" Width="235" IsReadOnly="True" Background="#FFD1D1D1" 
+        <TextBox Height="27" Canvas.Left="258" TextWrapping="Wrap" Text="Скорость прямоугольника (1 - 15):" Canvas.Top="-85" Width="235" IsReadOnly="True" Background="#FFD1D1D1" 
                  HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
-        <TextBox x:Name="speedRectangle" MaxLength="2" Height="28" Canvas.Left="527" TextWrapping="Wrap" Text="" Canvas.Top="-84" Width="47" Background="White" TabIndex="1"
+        <TextBox x:Name="speedRectangle" MaxLength="2" Height="28" Canvas.Left="493" TextWrapping="Wrap" Text="" Canvas.Top="-85" Width="81" Background="White" TabIndex="1"
                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black"/>
 
         <!--Координаты прямоугольника-->
@@ -67,18 +67,18 @@
         <!--Масса мяча-->
         <TextBox Height="41" Canvas.Left="771" TextWrapping="Wrap" Text="Масса мяча:" Canvas.Top="-81" Width="73" IsReadOnly="True" Background="#FFD1D1D1" 
             HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
-        <TextBox x:Name="WeightEllipse" MaxLength="2" Height="27" Canvas.Left="786" TextWrapping="Wrap" Text="" Canvas.Top="-35" Width="47" Background="White" TabIndex="7"
+        <TextBox x:Name="WeightEllipse" MaxLength="4" Height="27" Canvas.Left="786" TextWrapping="Wrap" Text="" Canvas.Top="-35" Width="47" Background="White" TabIndex="7"
             HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black"/>
 
         <!--Масса прямоугольника-->
         <TextBox Height="41" Canvas.Left="753" TextWrapping="Wrap" Text="Масса прямоугольника:" Canvas.Top="19" Width="116" IsReadOnly="True" Background="#FFD1D1D1" 
             HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
-        <TextBox x:Name="WeightRectangle" MaxLength="2" Height="27" Canvas.Left="786" TextWrapping="Wrap" Text="" Canvas.Top="65" Width="47" Background="White" TabIndex="8"
+        <TextBox x:Name="WeightRectangle" MaxLength="4" Height="27" Canvas.Left="786" TextWrapping="Wrap" Text="" Canvas.Top="65" Width="47" Background="White" TabIndex="8"
             HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black"/>
 
 
-        <!--Столкновения с прямоугольником-->
-        <TextBox Height="41" Canvas.Left="753" TextWrapping="Wrap" Text="Количество столкновений:" Canvas.Top="217" Width="116" IsReadOnly="True" Background="#FFD1D1D1" 
+        <!--Количество столкновений с прямоугольником-->
+        <TextBox Height="41" Canvas.Left="753" TextWrapping="Wrap" Text="Количество столкновений:" Canvas.Top="228" Width="116" IsReadOnly="True" Background="#FFD1D1D1" 
             HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
 
         <TextBox Height="28" Canvas.Left="743" TextWrapping="Wrap" Text="Сверху:" Canvas.Top="273" Width="60" IsReadOnly="True" Background="#FFD1D1D1" 
