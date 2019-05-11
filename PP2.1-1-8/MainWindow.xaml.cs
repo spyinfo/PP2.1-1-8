@@ -47,9 +47,13 @@ namespace PP2._1_1_8
         bool isDownRectangle = true; // летит ли прямоугольник вниз
 
         int speed; // скорость мяча
+        double speedVertical;
+        double speedHorizontal;
+
         int speedRectangleValue; // скорость прямоугольника
         int weightEllipse; // масса мяча
         int weightRectangle; // масса прямоугольника
+
         delegate void DelegateSet(UIElement element, double length); // для определения Canvas.SetLeft / Canvas.SetTop
         delegate double DelegateGet(UIElement element); // для определения Canvas.GetLeft / Canvas.GetTop
 
@@ -81,7 +85,7 @@ namespace PP2._1_1_8
                 speed = int.Parse(Speed.Text);
                 speedRectangleValue = int.Parse(speedRectangle.Text);
                 weightEllipse = int.Parse(WeightEllipse.Text);
-                weightRectangle= int.Parse(WeightRectangle.Text);
+                weightRectangle = int.Parse(WeightRectangle.Text);
 
                 var X1 = int.Parse(x1.Text);
                 var Y1 = int.Parse(y1.Text);
@@ -92,8 +96,9 @@ namespace PP2._1_1_8
                     MessageBox.Show("Неверная скорость у одного из элементов!", "Скорость");
 
                 else if ((X1 < AnimationCanvas.MinWidth) || (Y1 < AnimationCanvas.MinHeight) || (X2 < AnimationCanvas.MinWidth) || (Y2 < AnimationCanvas.MinHeight) || 
-                        (X2 > AnimationCanvas.Width) || (Y2 > AnimationCanvas.Height) || (X1 > AnimationCanvas.Width) || (Y1 > AnimationCanvas.Height))
-                    MessageBox.Show("Неверные координаты прямоугольника!", "Координаты");                
+                        (X2 > AnimationCanvas.Width) || (Y2 > AnimationCanvas.Height) || (X1 > AnimationCanvas.Width) || (Y1 > AnimationCanvas.Height) ||
+                        (X2 <= X1) || (Y2 <= Y1))
+                    MessageBox.Show("Неверные координаты прямоугольника!", "Координаты");       
 
                 else
                 {
@@ -106,6 +111,7 @@ namespace PP2._1_1_8
                     AnimationCanvas.Children.Add(rectangle);
 
                     HideTheTips(); // прячем подсказки
+
                     // Все элементы TextBox делаем неизменяемыми
                     x1.IsReadOnly = true; 
                     y1.IsReadOnly = true;
@@ -114,6 +120,11 @@ namespace PP2._1_1_8
                     Speed.IsReadOnly = true;
                     speedRectangle.IsReadOnly = true;
                     StartAnimation.Visibility = Visibility.Hidden; // прячем кнопку "Start" после нажатия
+
+                    speedHorizontal = speed;
+                    speedVertical = speed;
+                    SpeedHorizontal.Text = Convert.ToString(speedHorizontal);
+                    SpeedVertical.Text = Convert.ToString(speedVertical);
 
                     DispatcherTimer timer = new DispatcherTimer();
                     timer.Interval = new TimeSpan(0, 0, 0, 0, 5);
@@ -184,15 +195,48 @@ namespace PP2._1_1_8
             /// Столкновения с прямоугольником
 
 
-            // Снизу
-            if ((Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle) + rectangle.Height) &&
-                    (Canvas.GetTop(ellipse) >= Canvas.GetTop(rectangle) - ellipse.Height + rectangle.Height) &&
-                    (Canvas.GetLeft(ellipse) >= Canvas.GetLeft(rectangle) - (ellipse.Width / 2)) &&
-                    (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + rectangle.ActualWidth + ellipse.Width))
-            {
-                isDown = true;
-                MessageBox.Show("Снизу");
-            }
+            //// Сверху 
+            //if (Canvas.GetTop(ellipse) + ellipse.Height >= Canvas.GetTop(rectangle) &&
+            //        (Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle)) &&
+            //        (Canvas.GetLeft(ellipse) + (ellipse.Height / 2) >= Canvas.GetLeft(rectangle)) &&
+            //        (Canvas.GetLeft(ellipse) + (ellipse.Height / 2) <= Canvas.GetLeft(rectangle) + rectangle.Width))
+            //{
+            //    isDown = false;
+            //    NumberOfCollisionsTop.Text = Convert.ToString(int.Parse(NumberOfCollisionsTop.Text) + 1);
+            //}
+
+            //// Снизу 
+            //if (Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle) + rectangle.Height &&
+            //        (Canvas.GetTop(ellipse) >= Canvas.GetTop(rectangle) - ellipse.Height + rectangle.Height) && 
+            //        (Canvas.GetLeft(ellipse) + (ellipse.Height / 2) >= Canvas.GetLeft(rectangle)) &&
+            //        (Canvas.GetLeft(ellipse) + (ellipse.Height / 2) <= Canvas.GetLeft(rectangle) + rectangle.Width))
+            //{
+            //    isDown = true;
+            //    NumberOfCollisionsBottom.Text = Convert.ToString(int.Parse(NumberOfCollisionsBottom.Text) + 1);
+            //}
+
+
+            //// Слева
+            //if ((Canvas.GetLeft(ellipse) + ellipse.Width >= (Canvas.GetLeft(rectangle))) &&
+            //        (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + ellipse.Width) &&
+            //        (Canvas.GetTop(ellipse) + (ellipse.Height / 2) >= Canvas.GetTop(rectangle)) &&
+            //        (Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle) + rectangle.ActualHeight))
+            //{
+            //    isRight = false;
+            //    NumberOfCollisionsLeft.Text = Convert.ToString(int.Parse(NumberOfCollisionsLeft.Text) + 1);
+            //}
+
+
+            //// Справа
+            //if ((Canvas.GetLeft(ellipse) <= (Canvas.GetLeft(rectangle) + rectangle.ActualWidth)) &&
+            //        (Canvas.GetLeft(ellipse) > (Canvas.GetLeft(rectangle) - ellipse.Width + rectangle.ActualWidth)) &&
+            //        (Canvas.GetTop(ellipse) + ellipse.Width >= Canvas.GetTop(rectangle)) &&
+            //        (Canvas.GetTop(ellipse) + ellipse.Height <= Canvas.GetTop(rectangle) + rectangle.ActualHeight + ellipse.Height))
+            //{
+            //    isRight = true;
+            //    NumberOfCollisionsRight.Text = Convert.ToString(int.Parse(NumberOfCollisionsRight.Text) + 1);
+            //}
+
 
 
             // Сверху
@@ -201,9 +245,20 @@ namespace PP2._1_1_8
                     (Canvas.GetLeft(ellipse) >= Canvas.GetLeft(rectangle) - (ellipse.Width / 2)) &&
                     (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + rectangle.ActualWidth + ellipse.Width))
             {
-          
+
                 isDown = false;
-                MessageBox.Show("Сверху");
+                NumberOfCollisionsTop.Text = Convert.ToString(int.Parse(NumberOfCollisionsTop.Text) + 1);
+            }
+
+
+            // Снизу
+            if ((Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle) + rectangle.Height) &&
+                    (Canvas.GetTop(ellipse) >= Canvas.GetTop(rectangle) - ellipse.Height + rectangle.Height) &&
+                    (Canvas.GetLeft(ellipse) >= Canvas.GetLeft(rectangle) - (ellipse.Width / 2)) &&
+                    (Canvas.GetLeft(ellipse) + ellipse.Width <= Canvas.GetLeft(rectangle) + rectangle.ActualWidth + ellipse.Width))
+            {
+                isDown = true;
+                NumberOfCollisionsBottom.Text = Convert.ToString(int.Parse(NumberOfCollisionsBottom.Text) + 1);
             }
 
 
@@ -214,7 +269,12 @@ namespace PP2._1_1_8
                     (Canvas.GetTop(ellipse) <= Canvas.GetTop(rectangle) + rectangle.ActualHeight))
             {
                 isRight = false;
-                MessageBox.Show("Слева");
+
+                speedVertical = (((weightEllipse - weightRectangle) * speedVertical) + 2 * weightRectangle * weightEllipse) / (weightEllipse + weightRectangle);
+                //speedVertical = -speedVertical + 2 * ((weightRectangle * speedRectangleValue + weightEllipse * speedVertical) / (weightEllipse + weightRectangle));
+                SpeedVertical.Text = Convert.ToString(speedVertical);
+
+                NumberOfCollisionsLeft.Text = Convert.ToString(int.Parse(NumberOfCollisionsLeft.Text) + 1);
             }
 
 
@@ -225,9 +285,14 @@ namespace PP2._1_1_8
                     (Canvas.GetTop(ellipse) + ellipse.Height <= Canvas.GetTop(rectangle) + rectangle.ActualHeight + ellipse.Height))
             {
                 isRight = true;
-                MessageBox.Show("Справа");
+
+                speedVertical = (((weightEllipse - weightRectangle) * speedVertical) + 2 * weightRectangle * weightEllipse) / (weightEllipse + weightRectangle);
+                //speedVertical = -speedVertical + 2 * ((weightRectangle * speedRectangleValue + weightEllipse * speedVertical) / (weightEllipse + weightRectangle));
+                SpeedVertical.Text = Convert.ToString(speedVertical);
+
+                NumberOfCollisionsRight.Text = Convert.ToString(int.Parse(NumberOfCollisionsRight.Text) + 1);
             }
-               
+
 
 
 
@@ -238,10 +303,10 @@ namespace PP2._1_1_8
             DelegateGet delegateGetTop = Canvas.GetTop;
 
             // Если мяч летит вправо
-            isOnDirection(isRight, speed, delegateSetLeft, delegateGetLeft, ellipse);
+            isOnDirection(isRight, speedVertical, delegateSetLeft, delegateGetLeft, ellipse);
 
             // Если мяч летит вниз
-            isOnDirection(isDown, speed, delegateSetTop, delegateGetTop, ellipse);
+            isOnDirection(isDown, speedHorizontal, delegateSetTop, delegateGetTop, ellipse);
 
             // Если прямоугольник летит вниз
             if (isDownRectangle)
@@ -260,7 +325,7 @@ namespace PP2._1_1_8
         /// <param name="delegateSetLeftTop">Определяем SetLeft или SetTop</param>
         /// <param name="delegateGetLeftTop">Определяем GetLeft или GetTop</param>
         /// <param name="ellipse">ellipse</param>
-        private void isOnDirection(bool isDirection, int speed, DelegateSet delegateSetLeftTop, DelegateGet delegateGetLeftTop, Ellipse ellipse)
+        private void isOnDirection(bool isDirection, double speed, DelegateSet delegateSetLeftTop, DelegateGet delegateGetLeftTop, Ellipse ellipse)
         {
             if (isDirection)
                 delegateSetLeftTop(ellipse, delegateGetLeftTop(ellipse) + speed);

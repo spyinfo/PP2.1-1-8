@@ -76,5 +76,40 @@
         <TextBox x:Name="WeightRectangle" MaxLength="2" Height="27" Canvas.Left="786" TextWrapping="Wrap" Text="" Canvas.Top="65" Width="47" Background="White" TabIndex="8"
             HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black"/>
 
+
+        <!--Столкновения с прямоугольником-->
+        <TextBox Height="41" Canvas.Left="753" TextWrapping="Wrap" Text="Количество столкновений:" Canvas.Top="217" Width="116" IsReadOnly="True" Background="#FFD1D1D1" 
+            HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
+
+        <TextBox Height="28" Canvas.Left="743" TextWrapping="Wrap" Text="Сверху:" Canvas.Top="273" Width="60" IsReadOnly="True" Background="#FFD1D1D1" 
+            HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
+        <TextBox x:Name="NumberOfCollisionsTop" MaxLength="2" Height="27" Canvas.Left="808" TextWrapping="Wrap" Text="0" Canvas.Top="274" Width="47" Background="White" TabIndex="8"
+            HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black" IsReadOnly="True"/>
+
+        <TextBox Height="28" Canvas.Left="743" TextWrapping="Wrap" Text="Снизу:" Canvas.Top="305" Width="60" IsReadOnly="True" Background="#FFD1D1D1" 
+            HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
+        <TextBox x:Name="NumberOfCollisionsBottom" MaxLength="2" Height="27" Canvas.Left="808" TextWrapping="Wrap" Text="0" Canvas.Top="306" Width="47" Background="White" TabIndex="8"
+            HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black" IsReadOnly="True"/>
+
+        <TextBox Height="28" Canvas.Left="743" TextWrapping="Wrap" Text="Слева:" Canvas.Top="337" Width="60" IsReadOnly="True" Background="#FFD1D1D1" 
+            HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
+        <TextBox x:Name="NumberOfCollisionsLeft" MaxLength="2" Height="27" Canvas.Left="808" TextWrapping="Wrap" Text="0" Canvas.Top="338" Width="47" Background="White" TabIndex="8"
+            HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black" IsReadOnly="True"/>
+
+        <TextBox Height="28" Canvas.Left="743" TextWrapping="Wrap" Text="Справа:" Canvas.Top="369" Width="60" IsReadOnly="True" Background="#FFD1D1D1" 
+            HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
+        <TextBox x:Name="NumberOfCollisionsRight" MaxLength="2" Height="27" Canvas.Left="808" TextWrapping="Wrap" Text="0" Canvas.Top="370" Width="47" Background="White" TabIndex="8"
+            HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black" IsReadOnly="True"/>
+
+
+        <!--Скорость по вертикали и горизонтали в режиме реального времени-->
+        <TextBox x:Name="SpeedHorizontal" MaxLength="2" Height="42" Canvas.Left="832" TextWrapping="Wrap" Text="" Canvas.Top="117" Width="37" Background="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black" IsReadOnly="True"/>
+        <TextBox Height="42" Canvas.Left="738" TextWrapping="Wrap" Text="Скорость по горизонтали" Canvas.Top="117" Width="94" IsReadOnly="True" Background="#FFD1D1D1" 
+            HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
+
+        <TextBox x:Name="SpeedVertical" MaxLength="5" Height="40" Canvas.Left="832" TextWrapping="Wrap" Text="" Canvas.Top="171" Width="37" Background="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="#FF363636" BorderBrush="Black" IsReadOnly="True"/>
+        <TextBox Height="40" Canvas.Left="739" TextWrapping="Wrap" Text="Скорость по вертикали" Canvas.Top="171" Width="93" IsReadOnly="True" Background="#FFD1D1D1" 
+            HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" SelectionBrush="{x:Null}" BorderBrush="#FFD1D1D1" FontSize="14"/>
+
     </Canvas>
 </Window>
